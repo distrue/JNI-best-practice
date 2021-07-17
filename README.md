@@ -1,0 +1,4 @@
+### Prerequisties
+
+* cmake
+

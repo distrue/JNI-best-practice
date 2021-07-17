@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+task compileJNIInterface (type: JavaCompile) {
+    options.compilerArgs += ["-h", file("jni-lib/src/include")]
+    source = "src/main/java/org/distrue/engine"
+    classpath = sourceSets.main.compileClasspath
+    destinationDirectory = file("jni-lib/src/include")
+
+    doLast {
+        exec {
+            commandLine 'sh', '-c', 'rm -rf jni-lib/src/include/org'
+            // TODO: update to remove java build path, now hard-coded
+        }
+    }
+}
+
+// TOOD: update task, multicommand를 묶기 위해 type:Exec 이 아닌 doLast를 활용했음
+task compileJNI {
+    dependsOn compileJNIInterface
+
+    doLast {
+        exec {
+            commandLine 'sh', '-c', 'mkdir -p build/natives'
+        }
+        exec {
+            commandLine 'sh', '-c', 'cmake -B build/natives -S jni-lib'
+        }
+        exec {
+            commandLine 'sh', '-c', 'cd build/natives && make'
+        }
+    }
+}
+
+clean.doFirst {
+    delete fileTree('jni-lib/src/include') {
+        include 'jni_*.h'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(Test) {
+    systemProperty "java.library.path", "build/natives/lib"
+    testLogging.showStandardStreams = false
+}
+
+// TOOD: add library path import without systemProperty, hardCoding
+tasks.withType(JavaExec) {
+    systemProperty "java.library.path", "build/natives/lib"
+}
