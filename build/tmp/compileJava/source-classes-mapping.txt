@@ -1,4 +1,0 @@
-org/distrue/Application.java
- org.distrue.Application
-org/distrue/engine/Hello.java
- org.distrue.engine.Hello

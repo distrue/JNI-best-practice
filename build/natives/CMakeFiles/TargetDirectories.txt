@@ -1,5 +1,0 @@
-/Users/max/Desktop/JNI_best_practice/build/natives/CMakeFiles/rebuild_cache.dir
-/Users/max/Desktop/JNI_best_practice/build/natives/CMakeFiles/edit_cache.dir
-/Users/max/Desktop/JNI_best_practice/build/natives/src/CMakeFiles/rebuild_cache.dir
-/Users/max/Desktop/JNI_best_practice/build/natives/src/CMakeFiles/edit_cache.dir
-/Users/max/Desktop/JNI_best_practice/build/natives/src/CMakeFiles/hello.dir
